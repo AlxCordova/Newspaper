@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+     
+    <button class="close">
+        <a href="{% url 'article_list' %}">
+            <i class="far fa-times-circle"></i>
+        </a>
+    </button>
+  <div class="container my-5 py-5 z-depth-1">
+    <!--Section: Content-->
+    <section class="px-md-5 mx-md-5 text-center dark-grey-text">
+      <!--Grid row-->
+      <div class="row">
+
+        <!--Grid column-->
+        <div class="col-md-6 mb-4 mb-md-0">
+          <h3 class="font-weight-bold">{{ object.title }}</h3>
+          <h6 class="text-muted">by <strong>{{ object.author|capfirst }}</strong> | {{ object.date | date:"D d M Y" }}</h6>
+          <br>
+          <p class="text-muted">{{ article.body}}</p>
+          <a class="btn btn-primary btn-sm" href="{% url 'article_edit' article.pk %}"><i class="far fa-edit"></i> Edit</a>
+                <a class="btn btn-danger btn-sm" href="{% url 'article_delete' article.pk %}"><i class="far fa-trash-alt"></i> Delete</a>
+          <hr class="my-5">
+          <p class="font-weight-bold">Follow me on:</p>
+
+          <!--Facebook-->
+          <a href="https://www.linkedin.com/in/edwin-cordova" class="mx-1" role="button"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://www.github.com/AlxCordova" class="mx-1" role="button"><i class="fab fa-github"></i></a>
+          <a href="#" class="mx-1" role="button"><i class="fab fa-stack-overflow"></i></a>
+
+        </div>
+        <!--Grid column-->
+        <!--Grid column-->
+        <div class="col-md-5 mb-4 mb-md-0">
+          <img src="https://files.realpython.com/media/django-pony.c61d43c33ab3.png" class="img-fluid" alt="">
+        </div>
+        <!--Grid column-->
+      </div>
+      <!--Grid row-->
+    </section>
+    <br>
+    <!--Section: Content-->
+    <h3 class="font-weight-bold">Comments:</h3>
+    {{ article.comments.count }} Comment{{ comments|length|pluralize:"s" }}
+    {% for comment in article.comments.all %}
+    <div class="card align-items-center">
+      <h6 class="font-weight-bold text-center"> {{ comment.author|capfirst}}</h6>
+      <p> {{ comment }} 
+      <button><i class="far fa-heart"></i></button>
+      <button><i class="far fa-thumbs-down"></i></button>
+      </p>
+      </div>
+    {% endfor %}
+    
+    {% comment %} 
+    <div class="card">
+      <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <input type="submit" value="Submit" class="btn btn-outline-success">
+        <button class="btn btn-primary ml-2" type="submit">Submit</button> 
+    </form>
+    </div>{% endcomment %}
+
+{% endblock content %}
